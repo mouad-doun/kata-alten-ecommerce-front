@@ -1,0 +1,64 @@
+<h1 class="text-center">Liste des produits</h1>
+
+<p-button label="Créer produit" (onClick)="onCreate()" class="block text-center mb-4" />
+
+<p-dataView #dv [value]="products()">
+  <ng-template pTemplate="list" let-products>
+    @for (product of products; track product) {
+      <p-card class="block mb-4">
+        <img *ngIf="product.image" [src]="product.image" alt="" class="w-full h-40 object-cover mb-2 rounded" />
+
+        <span class="font-medium text-secondary text-sm">{{ product.category }}</span>
+
+        <div class="text-lg font-medium text-900 mt-1">{{ product.name }}</div>
+
+        <p class="text-sm text-gray-700 mt-1">{{ product.description }}</p>
+
+        <div class="text-lg font-semibold text-primary mt-2">{{ product.price | currency:'EUR' }}</div>
+
+        <div class="mt-1">
+          <span 
+            [ngClass]="{
+              'text-green-600 font-semibold': product.inventoryStatus === 'INSTOCK',
+              'text-orange-600 font-semibold': product.inventoryStatus === 'LOWSTOCK',
+              'text-red-600 font-semibold': product.inventoryStatus === 'OUTOFSTOCK'
+            }"
+          >
+            {{ product.inventoryStatus }}
+          </span>
+        </div>
+
+        <div class="mt-1 flex items-center">
+          <ng-container *ngFor="let star of [1,2,3,4,5]">
+            <i 
+              class="pi" 
+              [ngClass]="{
+                'pi-star-fill text-yellow-500': star <= product.rating,
+                'pi-star text-gray-300': star > product.rating
+              }"
+            ></i>
+          </ng-container>
+          <span class="ml-2 text-sm text-gray-600">{{ product.rating }}/5</span>
+        </div>
+
+        <ng-template pTemplate="footer">
+          <div class="flex gap-3 mt-3">
+            <p-button label="Ajouter" severity="primary" (onClick)="addToCart(product)" />
+            <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" />
+            <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
+          </div>
+        </ng-template>
+      </p-card>
+    }
+  </ng-template>
+</p-dataView>
+
+<p-dialog [(visible)]="isDialogVisible"
+          [style]="{ width: '50vw' }"
+          header="Ajout/Edition produit">
+  <app-product-form
+    [product]="editedProduct()"
+    (save)="onSave($event)"
+    (cancel)="onCancel()"
+  />
+</p-dialog>

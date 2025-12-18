@@ -1,0 +1,26 @@
+.app-content {
+    overflow: hidden;
+    height: 100%;
+}
+
+.pi-shopping-cart:hover {
+    cursor: pointer;
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.3); /* semi-transparent overlay */
+  z-index: 9999;
+}
+
+.spinner {
+  width: 4rem !important;
+  height: 4rem !important;
+}
